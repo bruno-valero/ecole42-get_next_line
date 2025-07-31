@@ -6,20 +6,11 @@
 /*   By: brunofer <brunofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 10:40:03 by brunofer          #+#    #+#             */
-/*   Updated: 2025/07/30 18:26:37 by brunofer         ###   ########.fr       */
+/*   Updated: 2025/07/31 19:11:01 by brunofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	*empty(void)
-{
-	char	*result;
-
-	result = (char *)malloc(1);
-	result[0] = 0;
-	return (result);
-}
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -32,11 +23,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	len_str = ft_strlen(s);
 	if (!s || (start > (unsigned int)len_str))
-		return (empty());
+	{
+		sub = (char *)malloc(1);
+		sub[0] = 0;
+		return (sub);
+	}
+	size = len_str - start;
 	if (len < (len_str - start))
 		size = len;
-	else
-		size = len_str - start;
 	sub = (char *)malloc((size + 1) * sizeof(char));
 	if (!sub)
 		return (NULL);
@@ -47,12 +41,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-int	ft_strlen(char *str)
+int	ft_strlen(const char *str)
 {
 	int	i;
 
 	if (!str)
 		return (0);
+	i = 0;
 	while (str[i])
 		i++;
 	return (i);
@@ -73,23 +68,39 @@ char	*ft_strdup(const char *s)
 	return (ptr);
 }
 
-char	*ft_strjoin(char *dst, char *src)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
-	int		len_dst;
-	int		len_src;
+	int		len_s1;
+	int		len_s2;
 	char	*result;
 
-	if (!src || !src[0])
-		return (ft_strdup(dst));
-	if (!dst || !dst[0])
-		return (ft_strdup(src));
-	if ((!dst && !src) || (!src[0] && !dst[0]))
+	if (!s2 || !s2[0])
+		return (ft_strdup(s1));
+	if (!s1 || !s1[0])
+		return (ft_strdup(s2));
+	if ((!s1 && !s2) || (!s2[0] && !s1[0]))
 		return (ft_strdup(""));
-	len_dst = ft_strlen(dst);
-	len_src = ft_strlen(src);
-	result = malloc((len_dst + len_src + 1) * sizeof(char));
-	while (src[i])
-		dst[len_dst + i] = src[i];
+	len_s1 = ft_strlen(s1);
+	len_s2 = ft_strlen(s2);
+	result = malloc((len_s1 + len_s2 + 1) * sizeof(char));
+	i = -1;
+	while (s1[++i])
+		result[i] = s1[i];
+	i = -1;
+	while (s2[++i])
+		result[len_s1 + i] = s2[i];
 	return (result);
+}
+
+void	release_memory(void *ptr)
+{
+	unsigned char	*p;
+	int				i;
+
+	p = (unsigned char *)ptr;
+	i = -1;
+	while (p[++i])
+		p[i] = '\0';
+	free(ptr);
 }
