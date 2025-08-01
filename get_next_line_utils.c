@@ -6,7 +6,7 @@
 /*   By: brunofer <brunofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 10:40:03 by brunofer          #+#    #+#             */
-/*   Updated: 2025/07/31 19:11:01 by brunofer         ###   ########.fr       */
+/*   Updated: 2025/08/01 17:45:00 by brunofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-void	release_memory(void *ptr)
+void	*release_memory(void *ptr1, void *ptr2)
 {
-	unsigned char	*p;
-	int				i;
-
-	p = (unsigned char *)ptr;
-	i = -1;
-	while (p[++i])
-		p[i] = '\0';
-	free(ptr);
+	free(ptr1);
+	free(ptr2);
+	return (NULL);
 }
