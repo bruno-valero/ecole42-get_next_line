@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunofer <brunofer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 10:40:10 by brunofer          #+#    #+#             */
-/*   Updated: 2025/08/04 16:45:38 by brunofer         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:43:36 by brunofer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
 	char		*buffer;
-	static char	*static_buffer;
+	static char	*static_buffer[1024];
 	int			buffer_size;
 	int			last_read;
 
@@ -26,12 +26,14 @@ char	*get_next_line(int fd)
 	buffer_size = BUFFER_SIZE;
 	get_endl(&buffer, buffer_size, fd, &last_read);
 	if (last_read < 0)
-		return (release_memory((void **) &static_buffer, (void **) NULL));
-	clear_endl(&static_buffer, &buffer);
+		return (release_memory((void **) &static_buffer[fd], (void **) NULL));
+	clear_endl(&static_buffer[fd], &buffer);
 	if (!ft_strlen(buffer))
-		return (release_memory((void **) &static_buffer, (void **) &buffer));
-	if (last_read && !ft_strlen(static_buffer))
-		release_memory((void **) &static_buffer, (void **) NULL);
+		return (
+			release_memory((void **) &static_buffer[fd], (void **) &buffer)
+		);
+	if (last_read && !ft_strlen(static_buffer[fd]))
+		release_memory((void **) &static_buffer[fd], (void **) NULL);
 	return (buffer);
 }
 
